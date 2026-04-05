@@ -13,9 +13,9 @@
 
 set -euo pipefail
 
-TARGET_USER="ops"
+TARGET_USER="Ops"
 TARGET_PASS="1234"
-HOSTNAME="arch"
+HOSTNAME="Arch"
 DISK="/dev/sda"
 
 # ---------------------------------------------------------------------------
