@@ -1,0 +1,10 @@
+*.bak
+*.swp
+*.log
+.DS_Store
+
+# Ambxst runtime state (absichtlich nicht versioniert)
+.local/share/ambxst/keys.db
+.local/share/ambxst/clipboard.db
+.local/share/ambxst/clipboard-data/
+.local/share/ambxst/chats/

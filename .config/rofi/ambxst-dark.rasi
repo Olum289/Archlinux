@@ -1,0 +1,118 @@
+/* Ambxst-inspired dark theme for rofi-wayland */
+
+* {
+    bg:          rgba(30, 30, 46, 0.80);
+    bg-alt:      rgba(46, 52, 64, 0.70);
+    fg:          #e5e9f0;
+    fg-dim:      #81a1c1;
+    accent:      #88c0d0;
+    selected:    rgba(136, 192, 208, 0.25);
+    urgent:      #bf616a;
+    border-col:  rgba(136, 192, 208, 0.35);
+
+    background-color: transparent;
+    text-color:       @fg;
+    font:             "JetBrainsMono Nerd Font 11";
+}
+
+window {
+    transparency:     "real";
+    location:         center;
+    anchor:           center;
+    fullscreen:       false;
+    width:            620px;
+    x-offset:         0;
+    y-offset:         0;
+
+    enabled:          true;
+    border-radius:    16px;
+    border:           2px solid;
+    border-color:     @border-col;
+    background-color: @bg;
+    cursor:           "default";
+}
+
+mainbox {
+    enabled:   true;
+    spacing:   12px;
+    margin:    0px;
+    padding:   20px;
+    children:  [ "inputbar", "message", "listview" ];
+}
+
+inputbar {
+    enabled:            true;
+    spacing:            10px;
+    padding:            10px 14px;
+    border-radius:      12px;
+    background-color:   @bg-alt;
+    text-color:         @fg;
+    children:           [ "prompt", "entry" ];
+}
+
+prompt {
+    enabled:     true;
+    text-color:  @accent;
+}
+
+entry {
+    enabled:                  true;
+    background-color:         inherit;
+    text-color:               inherit;
+    cursor:                   text;
+    placeholder:              "Suchen…";
+    placeholder-color:        @fg-dim;
+}
+
+listview {
+    enabled:      true;
+    columns:      1;
+    lines:        8;
+    cycle:        true;
+    dynamic:      true;
+    scrollbar:    false;
+    spacing:      4px;
+    fixed-height: true;
+    background-color: transparent;
+    text-color:   @fg;
+}
+
+element {
+    enabled:        true;
+    spacing:        10px;
+    padding:        8px 12px;
+    border-radius:  10px;
+    cursor:         pointer;
+    background-color: transparent;
+    text-color:     @fg;
+}
+
+element selected.normal {
+    background-color: @selected;
+    text-color:       @fg;
+}
+
+element-icon {
+    size:             1.2em;
+    background-color: transparent;
+    text-color:       inherit;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+    vertical-align:   0.5;
+    horizontal-align: 0.0;
+}
+
+message {
+    background-color: @bg-alt;
+    border-radius:    10px;
+    padding:          8px;
+}
+
+textbox {
+    padding:          8px;
+    background-color: transparent;
+    text-color:       @fg;
+}
