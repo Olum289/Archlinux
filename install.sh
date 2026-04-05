@@ -1,50 +1,18 @@
 #!/usr/bin/env bash
 # Installer für Hyprland + Ambxst Dotfiles
-# Nutzung:
-#   als root:  ./install.sh        -> legt User 'ops' (Passwort '1234') an
-#                                     und führt sich danach als 'ops' erneut aus
-#   als user:  ./install.sh        -> installiert Pakete, setzt Symlinks, Ambxst
+# Nutzung: ./install.sh   (nicht als root ausführen, sudo wird bei Bedarf gefragt)
 
 set -euo pipefail
 
-TARGET_USER="ops"
-TARGET_PASS="1234"
-
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BACKUP_DIR="$HOME/.dotfiles-backup-$(date +%Y%m%d-%H%M%S)"
 
 log()  { printf '\e[1;32m==>\e[0m %s\n' "$*"; }
 warn() { printf '\e[1;33m==>\e[0m %s\n' "$*" >&2; }
 die()  { printf '\e[1;31m==>\e[0m %s\n' "$*" >&2; exit 1; }
 
+[[ $EUID -eq 0 ]] && die "Bitte NICHT als root ausführen. sudo wird nur wo nötig verwendet."
 command -v pacman >/dev/null || die "pacman nicht gefunden – ist das wirklich Arch?"
-
-# ---------------------------------------------------------------------------
-# 0. Wenn als root gestartet: Zielbenutzer anlegen und Script als ihm erneut starten
-# ---------------------------------------------------------------------------
-if [[ $EUID -eq 0 ]]; then
-    log "Root-Modus: lege Benutzer '$TARGET_USER' an (falls nicht vorhanden)"
-    if ! id "$TARGET_USER" >/dev/null 2>&1; then
-        useradd -m -G wheel -s /bin/bash "$TARGET_USER"
-    fi
-    echo "${TARGET_USER}:${TARGET_PASS}" | chpasswd
-    # wheel-Gruppe bekommt sudo (Arch-Standard, aber sicherstellen)
-    if [[ ! -f /etc/sudoers.d/10-wheel ]]; then
-        echo '%wheel ALL=(ALL:ALL) ALL' > /etc/sudoers.d/10-wheel
-        chmod 440 /etc/sudoers.d/10-wheel
-    fi
-    # Repo in Home des Zielbenutzers spiegeln, damit Symlinks dauerhaft stimmen
-    TARGET_HOME=$(getent passwd "$TARGET_USER" | cut -d: -f6)
-    if [[ "$DOTFILES" != "$TARGET_HOME/dotfiles" ]]; then
-        log "Kopiere Dotfiles nach $TARGET_HOME/dotfiles"
-        rm -rf "$TARGET_HOME/dotfiles"
-        cp -a "$DOTFILES" "$TARGET_HOME/dotfiles"
-        chown -R "$TARGET_USER:$TARGET_USER" "$TARGET_HOME/dotfiles"
-    fi
-    log "Starte Script erneut als '$TARGET_USER'"
-    exec runuser -l "$TARGET_USER" -c "bash '$TARGET_HOME/dotfiles/install.sh'"
-fi
-
-BACKUP_DIR="$HOME/.dotfiles-backup-$(date +%Y%m%d-%H%M%S)"
 
 # ---------------------------------------------------------------------------
 # 1. Pakete installieren
