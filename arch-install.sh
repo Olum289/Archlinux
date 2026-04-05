@@ -42,8 +42,8 @@ if [[ "${1:-}" == "--chroot" ]]; then
     echo "root:${TARGET_PASS}"           | chpasswd
     sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
-    # mkinitcpio: encrypt-Hook vor filesystems einfügen
-    sed -i 's/^HOOKS=.*/HOOKS=(base udev autodetect modconf kms keyboard keymap consolefont block encrypt filesystems fsck)/' /etc/mkinitcpio.conf
+    # mkinitcpio: encrypt-Hook zwischen block und filesystems einfügen
+    sed -i 's/^HOOKS=.*/HOOKS=(base udev autodetect microcode modconf kms keyboard keymap consolefont block encrypt filesystems fsck)/' /etc/mkinitcpio.conf
     mkinitcpio -P
 
     # GRUB: Kernel-Parameter für LUKS setzen
@@ -73,9 +73,9 @@ EOF
 
 mkfs.fat -F 32 "${DISK}1"
 
-# LUKS auf /dev/sda2
-echo -n "$LUKS_PASS" | cryptsetup luksFormat --type luks2 --batch-mode "${DISK}2" -
-echo -n "$LUKS_PASS" | cryptsetup open "${DISK}2" "$CRYPT_NAME" -
+# LUKS auf /dev/sda2 (Passphrase non-interaktiv über stdin)
+printf '%s' "$LUKS_PASS" | cryptsetup luksFormat --type luks2 --batch-mode --key-file=- "${DISK}2"
+printf '%s' "$LUKS_PASS" | cryptsetup open --key-file=- "${DISK}2" "$CRYPT_NAME"
 
 mkfs.ext4 -F "/dev/mapper/${CRYPT_NAME}"
 
