@@ -89,7 +89,21 @@ if command -v ambxst >/dev/null; then
 fi
 
 # ---------------------------------------------------------------------------
-# 5. Services / Fertig
+# 5. SDDM Theme (SilentSDDM) konfigurieren
+# ---------------------------------------------------------------------------
+log "Konfiguriere SDDM mit SilentSDDM Theme ..."
+sudo mkdir -p /etc/sddm.conf.d
+sudo tee /etc/sddm.conf.d/silent-theme.conf > /dev/null << 'EOF'
+[General]
+InputMethod=qtvirtualkeyboard
+GreeterEnvironment=QML2_IMPORT_PATH=/usr/share/sddm/themes/silent/components/,QT_IM_MODULE=qtvirtualkeyboard
+
+[Theme]
+Current=silent
+EOF
+
+# ---------------------------------------------------------------------------
+# 6. Services / Fertig
 # ---------------------------------------------------------------------------
 log "Aktiviere SDDM und NetworkManager (falls nötig) ..."
 sudo systemctl enable sddm.service NetworkManager.service 2>/dev/null || true

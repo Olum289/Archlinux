@@ -1,4 +1,3 @@
-adw-gtk-theme
 base
 base-devel
 blueman
@@ -22,7 +21,6 @@ hyprpaper
 imagemagick
 inetutils
 jq
-kate
 kitty
 libavif
 libnotify
@@ -35,19 +33,19 @@ network-manager-applet
 networkmanager
 noto-fonts-cjk
 nwg-look
-papirus-icon-theme
 pavucontrol
 pipewire-pulse
-plasma-desktop
 playerctl
 polkit-gnome
 power-profiles-daemon
 python-pipx
 qt5-wayland
 qt6-imageformats
+qt6-multimedia-ffmpeg
+qt6-svg
+qt6-virtualkeyboard
 qt6-wayland
 quickshell
-rofi
 sddm
 slurp
 sudo

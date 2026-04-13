@@ -1,12 +1,6 @@
-catppuccin-cursors-mocha
-catppuccin-gtk-theme-mocha
-catppuccin-plasma-colorscheme-mocha
-catppuccin-sddm-theme-mocha
 gradia
-kwin-polonium
 mpvpaper
-python312
+rofi-wayland
+sddm-silent-theme
 ttf-league-gothic
 ttf-phosphor-icons
-yay
-yay-debug
