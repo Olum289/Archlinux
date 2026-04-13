@@ -3,11 +3,7 @@
     "audio_config": {
         "audio": "pipewire"
     },
-    "bootloader_config": {
-        "bootloader": "Grub",
-        "uki": false,
-        "removable": false
-    },
+    "bootloader": "Grub",
     "debug": false,
     "hostname": "Arch",
     "kernels": [
@@ -21,18 +17,8 @@
     "network_config": {
         "type": "nm"
     },
-    "no_pkg_lookups": false,
     "ntp": true,
-    "offline": false,
     "packages": [],
-    "parallel downloads": 0,
-    "profile_config": null,
-    "script": "guided",
-    "silent": false,
-    "swap": {
-        "enabled": true,
-        "algorithm": "zstd"
-    },
-    "timezone": "Europe/Zurich",
-    "version": "2.8.6"
+    "swap": true,
+    "timezone": "Europe/Zurich"
 }
