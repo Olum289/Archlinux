@@ -1,0 +1,38 @@
+{
+    "archinstall-language": "English",
+    "audio_config": {
+        "audio": "pipewire"
+    },
+    "bootloader_config": {
+        "bootloader": "Grub",
+        "uki": false,
+        "removable": false
+    },
+    "debug": false,
+    "hostname": "Arch",
+    "kernels": [
+        "linux"
+    ],
+    "locale_config": {
+        "kb_layout": "de_CH-latin1",
+        "sys_enc": "UTF-8",
+        "sys_lang": "de_CH"
+    },
+    "network_config": {
+        "type": "nm"
+    },
+    "no_pkg_lookups": false,
+    "ntp": true,
+    "offline": false,
+    "packages": [],
+    "parallel downloads": 0,
+    "profile_config": null,
+    "script": "guided",
+    "silent": false,
+    "swap": {
+        "enabled": true,
+        "algorithm": "zstd"
+    },
+    "timezone": "Europe/Zurich",
+    "version": "2.8.6"
+}
