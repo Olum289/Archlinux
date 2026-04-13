@@ -12,7 +12,7 @@
     "locale_config": {
         "kb_layout": "de_CH-latin1",
         "sys_enc": "UTF-8",
-        "sys_lang": "de_CH"
+        "sys_lang": "en_US"
     },
     "network_config": {
         "type": "nm"
