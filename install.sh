@@ -103,7 +103,45 @@ Current=silent
 EOF
 
 # ---------------------------------------------------------------------------
-# 6. Services / Fertig
+# 6. rEFInd Boot Manager + Theme installieren, GRUB entfernen
+# ---------------------------------------------------------------------------
+log "Installiere rEFInd Boot Manager ..."
+sudo refind-install
+
+# Kernel-Parameter für rEFInd generieren
+log "Generiere rEFInd Kernel-Konfiguration ..."
+sudo mkrlconf
+
+log "Installiere rEFInd Theme ..."
+tmp=$(mktemp -d)
+git clone --depth=1 https://github.com/phamhuulocforwork/refind-theme.git "$tmp/refind-theme"
+sudo mkdir -p /boot/EFI/refind/refind-theme
+sudo cp -r "$tmp/refind-theme/fonts" "$tmp/refind-theme/icons" \
+           "$tmp/refind-theme/background.png" "$tmp/refind-theme/selection_big.png" \
+           "$tmp/refind-theme/selection_small.png" "$tmp/refind-theme/theme.conf" \
+           /boot/EFI/refind/refind-theme/
+rm -rf "$tmp"
+
+# Theme in refind.conf einbinden
+if ! grep -q 'refind-theme/theme.conf' /boot/EFI/refind/refind.conf 2>/dev/null; then
+    echo '' | sudo tee -a /boot/EFI/refind/refind.conf > /dev/null
+    echo 'include refind-theme/theme.conf' | sudo tee -a /boot/EFI/refind/refind.conf > /dev/null
+fi
+
+# GRUB entfernen
+log "Entferne GRUB (rEFInd übernimmt) ..."
+sudo grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --removable 2>/dev/null || true
+sudo efibootmgr -v 2>/dev/null | grep -i grub | grep -oP 'Boot\K[0-9A-Fa-f]{4}' | while read entry; do
+    sudo efibootmgr -b "$entry" -B 2>/dev/null || true
+done
+sudo rm -rf /boot/grub
+sudo rm -rf /boot/EFI/GRUB
+sudo pacman -Rns --noconfirm grub 2>/dev/null || true
+
+log "rEFInd ist jetzt der Boot Manager. Windows wird automatisch erkannt."
+
+# ---------------------------------------------------------------------------
+# 7. Services / Fertig
 # ---------------------------------------------------------------------------
 log "Aktiviere SDDM und NetworkManager (falls nötig) ..."
 sudo systemctl enable sddm.service NetworkManager.service 2>/dev/null || true
