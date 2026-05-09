@@ -12,7 +12,6 @@ openscreen-bin
 powershell-bin
 proton-pass-bin
 protonmail-bridge
-rofi-wayland
 sddm-silent-theme
 spotify
 ttf-league-gothic

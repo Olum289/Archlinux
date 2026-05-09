@@ -78,7 +78,7 @@ link() {
 }
 
 log "Setze Symlinks nach ~/.config/ ..."
-for dir in hypr ambxst kitty rofi gtk-3.0 gtk-4.0 MangoHud; do
+for dir in hypr ambxst kitty gtk-3.0 gtk-4.0 MangoHud; do
     [[ -d "$DOTFILES/.config/$dir" ]] && link "$DOTFILES/.config/$dir" "$HOME/.config/$dir"
 done
 
