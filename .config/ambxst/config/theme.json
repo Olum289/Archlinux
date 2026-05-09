@@ -1,5 +1,5 @@
 {
-  "oledMode": true,
+  "oledMode": false,
   "lightMode": false,
   "roundness": 16,
   "font": "Roboto Condensed",
@@ -93,7 +93,7 @@
     "label": "Bar BG",
     "gradient": [
       [
-        "background",
+        "surfaceDim",
         0
       ]
     ],
@@ -112,7 +112,7 @@
       0
     ],
     "itemColor": "overBackground",
-    "opacity": 1
+    "opacity": 0
   },
   "srPane": {
     "label": "Pane",
