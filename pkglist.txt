@@ -40,10 +40,10 @@ networkmanager
 nodejs
 noto-fonts-cjk
 npm
+ntfs-3g
 nwg-look
 obs-studio
 obsidian
-onlyoffice-desktopeditors
 openssh
 pavucontrol
 pipewire-pulse
@@ -59,8 +59,8 @@ qt6-virtualkeyboard
 qt6-wayland
 quickshell
 refind
-remmina
 restic
+rsync
 sddm
 signal-desktop
 slurp

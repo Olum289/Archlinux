@@ -84,8 +84,8 @@ archinstall --config /root/user_configuration.json --creds /root/user_credential
 ### Aufruf
 
 ```bash
-git clone https://github.com/Olum289/Archlinux.git ~/dotfiles
-cd ~/dotfiles
+git clone https://github.com/Olum289/Archlinux.git ~/.dotfiles
+cd ~/.dotfiles
 chmod +x install.sh
 ./install.sh
 ```
@@ -95,9 +95,9 @@ chmod +x install.sh
 1. **Pakete:** `sudo pacman -S --needed --noconfirm - < pkglist.txt`
 2. **AUR:** Wenn `yay` fehlt → wird aus dem AUR gebaut. Danach `yay -S --needed --noconfirm - < pkglist-aur.txt`.
 3. **Symlinks** (mit Backup vorhandener Dateien nach `~/.dotfiles-backup-<timestamp>/`):
-   * `~/dotfiles/.config/{hypr,ambxst,kitty,rofi,gtk-3.0,gtk-4.0,MangoHud}` → `~/.config/…`
-   * `~/dotfiles/.local/share/ambxst/*` → `~/.local/share/ambxst/…`
-   * `~/dotfiles/home/.bashrc` → `~/.bashrc`
+   * `~/.dotfiles/.config/{hypr,ambxst,kitty,rofi,gtk-3.0,gtk-4.0,MangoHud}` → `~/.config/…`
+   * `~/.dotfiles/.local/share/ambxst/*` → `~/.local/share/ambxst/…`
+   * `~/.dotfiles/home/.bashrc` → `~/.bashrc`
 4. **Wallpaper:** `wallpapers/*` → `~/Pictures/Wallpapers/`
 5. **Ambxst:** `curl -L get.axeni.de/ambxst | sh`, dann `ambxst install hyprland`.
 6. **SilentSDDM:** Konfiguriert SDDM mit dem SilentSDDM-Theme.
@@ -135,7 +135,7 @@ rEFInd erkennt Windows und Linux automatisch – kein manuelles Konfigurieren n�
 ## Update
 
 ```bash
-cd ~/dotfiles
+cd ~/.dotfiles
 git pull
 sudo pacman -S --needed - < pkglist.txt
 ```

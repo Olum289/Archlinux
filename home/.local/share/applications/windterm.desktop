@@ -1,0 +1,17 @@
+[Desktop Entry]
+Name=WindTerm
+Comment=A professional cross-platform SSH/Sftp/Shell/Telnet/Serial terminal
+GenericName=Connect Client
+Exec=env QT_QPA_PLATFORM=xcb windterm %U
+Type=Application
+Icon=windterm
+StartupNotify=false
+StartupWMClass=WindTerm
+Categories=Application;Development
+Actions=new-empty-window
+Keywords=windterm
+
+[Desktop Action new-empty-window]
+Name=New Empty Window
+Icon=windterm
+Exec=env QT_QPA_PLATFORM=xcb windterm %U

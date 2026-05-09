@@ -36,6 +36,30 @@ if [[ -f "$DOTFILES/pkglist-aur.txt" && -s "$DOTFILES/pkglist-aur.txt" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
+# 1b. Locale/Keyboard (Schweizer Layout für X11 + Console)
+# ---------------------------------------------------------------------------
+log "Setze X11/Console-Keymap auf Schweizer Layout ..."
+sudo localectl set-x11-keymap ch || warn "localectl set-x11-keymap fehlgeschlagen"
+sudo localectl set-keymap de_CH-latin1 || warn "localectl set-keymap fehlgeschlagen"
+
+# ---------------------------------------------------------------------------
+# 1c. WindTerm: globale Config ins User-Verzeichnis bringen,
+#     Wayland-Workaround via .desktop (Symlink kommt in Schritt 2)
+# ---------------------------------------------------------------------------
+if command -v windterm >/dev/null; then
+    log "WindTerm: profiles.config auf User-Pfad zeigen lassen ..."
+    if [[ -f /usr/lib/windterm/profiles.config ]]; then
+        echo "{\"path\": \"$HOME/.config/WindTerm\"}" | \
+            sudo tee /usr/lib/windterm/profiles.config > /dev/null
+    fi
+    if [[ -d /usr/lib/windterm/global && ! -d "$HOME/.config/WindTerm/global" ]]; then
+        log "WindTerm: globale Config nach ~/.config/WindTerm/ kopieren ..."
+        mkdir -p "$HOME/.config/WindTerm"
+        cp -r /usr/lib/windterm/global "$HOME/.config/WindTerm/"
+    fi
+fi
+
+# ---------------------------------------------------------------------------
 # 2. Symlinks setzen
 # ---------------------------------------------------------------------------
 link() {
@@ -67,6 +91,16 @@ done
 
 log "Setze Symlink für ~/.bashrc ..."
 link "$DOTFILES/home/.bashrc" "$HOME/.bashrc"
+
+if [[ -d "$DOTFILES/home/.local/share/applications" ]]; then
+    log "Setze Symlinks für ~/.local/share/applications/*.desktop ..."
+    mkdir -p "$HOME/.local/share/applications"
+    for f in "$DOTFILES"/home/.local/share/applications/*.desktop; do
+        [[ -e "$f" ]] || continue
+        link "$f" "$HOME/.local/share/applications/$(basename "$f")"
+    done
+    update-desktop-database "$HOME/.local/share/applications" 2>/dev/null || true
+fi
 
 # ---------------------------------------------------------------------------
 # 3. Wallpaper
@@ -128,6 +162,11 @@ if ! grep -q 'refind-theme/theme.conf' /boot/EFI/refind/refind.conf 2>/dev/null;
     echo 'include refind-theme/theme.conf' | sudo tee -a /boot/EFI/refind/refind.conf > /dev/null
 fi
 
+# Doppel-Boot-Einträge unterdrücken (systemd-boot in /EFI/systemd und /EFI/Boot)
+if ! grep -qE '^dont_scan_dirs.*EFI/systemd' /boot/EFI/refind/refind.conf 2>/dev/null; then
+    echo 'dont_scan_dirs ESP:/EFI/systemd,ESP:/EFI/Boot' | sudo tee -a /boot/EFI/refind/refind.conf > /dev/null
+fi
+
 # GRUB entfernen
 log "Entferne GRUB (rEFInd übernimmt) ..."
 sudo grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --removable 2>/dev/null || true
@@ -139,6 +178,27 @@ sudo rm -rf /boot/EFI/GRUB
 sudo pacman -Rns --noconfirm grub 2>/dev/null || true
 
 log "rEFInd ist jetzt der Boot Manager. Windows wird automatisch erkannt."
+
+# ---------------------------------------------------------------------------
+# 6b. Daten-Partition (Projekte) mounten
+#     Erwartet: ext4-Partition mit Label "projekte" existiert bereits.
+#     fstab nutzt LABEL= statt UUID, damit der Eintrag nach Reinstall ohne
+#     Anpassung weiter passt, solange das Label bestehen bleibt.
+# ---------------------------------------------------------------------------
+log "Konfiguriere /mnt/projekte (LABEL=projekte) und ~/Projekte als Bind-Mount ..."
+sudo mkdir -p /mnt/projekte
+mkdir -p "$HOME/Projekte"
+if ! grep -qE '^[^#]*LABEL=projekte[[:space:]]+/mnt/projekte' /etc/fstab; then
+    echo 'LABEL=projekte  /mnt/projekte  ext4  defaults,nofail  0  2' | \
+        sudo tee -a /etc/fstab > /dev/null
+fi
+if ! grep -qE "^[^#]*/mnt/projekte[[:space:]]+$HOME/Projekte" /etc/fstab; then
+    echo "/mnt/projekte  $HOME/Projekte  none  bind,nofail  0  0" | \
+        sudo tee -a /etc/fstab > /dev/null
+fi
+sudo systemctl daemon-reload || true
+sudo mount -a 2>/dev/null || \
+    warn "mount -a fehlgeschlagen — existiert eine Partition mit LABEL=projekte? Falls nicht, später mit mkfs.ext4 -L projekte /dev/<part> anlegen."
 
 # ---------------------------------------------------------------------------
 # 7. Services / Fertig
