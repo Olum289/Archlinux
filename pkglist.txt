@@ -5,7 +5,6 @@ blueman
 brightnessctl
 cliphist
 code
-discord
 dolphin
 dotnet-sdk
 easyeffects
@@ -87,6 +86,7 @@ ttf-roboto
 ttf-roboto-mono
 unrar
 veracrypt
+vesktop
 wdisplays
 wireshark-qt
 wl-clip-persist
