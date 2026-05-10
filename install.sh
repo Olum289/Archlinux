@@ -123,6 +123,16 @@ if command -v ambxst >/dev/null; then
 fi
 
 # ---------------------------------------------------------------------------
+# 4b. Lokale Ambxst-Patches überlagern
+#     Dateien unter $DOTFILES/.local/src/ambxst/ werden 1:1 ins
+#     installierte Ambxst-Source-Tree kopiert.
+# ---------------------------------------------------------------------------
+if [[ -d "$DOTFILES/.local/src/ambxst" && -d "$HOME/.local/src/ambxst" ]]; then
+    log "Wende lokale Ambxst-Patches an (Overlay aus Dotfiles) ..."
+    cp -rv "$DOTFILES/.local/src/ambxst/." "$HOME/.local/src/ambxst/"
+fi
+
+# ---------------------------------------------------------------------------
 # 5. SDDM Theme (SilentSDDM) konfigurieren
 # ---------------------------------------------------------------------------
 log "Konfiguriere SDDM mit SilentSDDM Theme ..."
