@@ -68,7 +68,6 @@ solaar
 sudo
 swaync
 tailscale
-telegram-desktop
 tesseract
 tesseract-data-chi_sim
 tesseract-data-chi_tra
