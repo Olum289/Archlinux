@@ -9,16 +9,21 @@
         },
         "listeners": [
             {
-                "timeout": 150,
+                "timeout": 600,
                 "onTimeout": "ambxst brightness 10 -s",
                 "onResume": "ambxst brightness -r"
             },
             {
-                "timeout": 300,
+                "timeout": 720,
                 "onTimeout": "loginctl lock-session"
             },
             {
-                "timeout": 330,
+                "timeout": 780,
+                "onTimeout": "hyprctl dispatch dpms off HDMI-A-1",
+                "onResume": "hyprctl dispatch dpms on HDMI-A-1"
+            },
+            {
+                "timeout": 1200,
                 "onTimeout": "ambxst screen off",
                 "onResume": "ambxst screen on"
             },
