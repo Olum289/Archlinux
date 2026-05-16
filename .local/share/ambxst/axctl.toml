@@ -6,8 +6,8 @@ inner = 2
 outer = 4
 [appearance.border]
 width = 2
-active_color = "rgb(ffb59e)"
-inactive_color = "rgb(181616)"
+active_color = "rgb(adc6ff)"
+inactive_color = "rgb(212227)"
 rounding = 16
 [appearance.opacity]
 active = 1.0
@@ -847,25 +847,18 @@ namespace = "quickshell"
 blur_popups = true
 
 [[layer_rules]]
-namespace = "quickshell"
-ignore_alpha = true
-ignore_alpha_value = 1.00
-
-[[layer_rules]]
 namespace = "selection"
 no_anim = true
 
 [[layer_rules]]
 namespace = "fabric"
 blur = true
-ignore_alpha_value = 0.4
 
 [[layer_rules]]
 namespace = "ambxst"
 blur = true
 blur_popups = true
 no_anim = true
-ignore_alpha_value = 0.5
 
 [[layer_rules]]
 namespace = "overview"
